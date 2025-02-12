@@ -9,7 +9,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "https://microlink-api.vercel.app",
+        target: "https://short-url-backend-v9xs.onrender.com",
         changeOrigin: true,
         secure: false,
       },
