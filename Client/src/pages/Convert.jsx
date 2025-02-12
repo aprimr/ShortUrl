@@ -49,7 +49,7 @@ export default function Convert() {
   const handleCopyShortUrl = () => {
     setCopied(true);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(shortId)
+      navigator.clipboard.writeText(`https://shorturl-jaj5.onrender.com/${shortId}`)
     } else {
       setError('Your browser doesnot support copy feature')
     }
