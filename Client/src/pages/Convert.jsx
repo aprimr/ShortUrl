@@ -1,37 +1,55 @@
 import { useRef, useState } from "react";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
+import { AiOutlineLoading } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { exportComponentAsPNG } from 'react-component-export-image';
+
+import axios from 'axios'
 import QRCode from "react-qr-code";
 
 export default function Convert() {
   const [url, setUrl] = useState("");
   const [longUrl, setLongUrl] = useState("");
-  const [shortedUrl, setShortedUrl] = useState("");
+  const [shortId, setShortId] = useState("");
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState('hello');
+  const [loading, setLoading] = useState(false)
   const [showShortedLink, setShowShortedLink] = useState(false);
 
   const QrRef = useRef()
 
-  const handleShortURL = () =>{
-    const shortUrl = `www.short.ly/${Math.random().toString(36).substr(2, 6)}`;
-    setShortedUrl(shortUrl);
-    setShowShortedLink(true);
+  const handleShortURL = async () =>{
+    setLoading(true);
+    setError('');
+    try {
+      const res = await axios.post('/api/url/shorten', { longUrl: url });
+      if(res.status === 200){
+        setLoading(false)
+        setLongUrl(res.data.urls.longUrl);
+        setShortId(res.data.urls.shortId);
+        setShowShortedLink(true);
+        setUrl("");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setError(error.response.data.message)
+    }
+    setLoading(false);
   }
 
-  const handleShortAnotherURL = () => {
+  const handleBackBtnClick = () => {
     setShowShortedLink(false);
     setUrl("");
     setLongUrl("");
-    setShortedUrl("");
+    setShortId("");
     setCopied(null);
   };
 
   const handleCopyShortUrl = () => {
     setCopied(true);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(shortedUrl)
+      navigator.clipboard.writeText(shortId)
     } else {
       setError('Your browser doesnot support copy feature')
     }
@@ -63,29 +81,30 @@ export default function Convert() {
             Ready to shorten your long URLs?
           </h2>
           <p className="text-xl font-normal text-gray-600 text-center mb-6 relative z-10">
-            Enter your long URL below to shorten it
+            Shorter URLs, Smoother Sharing!
           </p>
           
 
           {/* Input Section */}
           <div className="w-full max-w-md bg-white rounded-lg shadow-md px-6 pb-6 pt-5 border border-gray-200 relative z-10">
             <h2 className="text-lg text-md font-semibold text-gray-900 text-center mb-3 ">
-              Shorter URLs, Smoother Sharing!
+              Enter Long URL here
             </h2>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <input
                 type="text"
-                placeholder="Enter your long URL here..."
+                placeholder="https://www.example.com"
+                disabled = {loading}
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                className="flex-1 px-4 py-3 w-full border border-gray-300 rounded-lg text-lg text-gray-800 focus:outline-none"
+                className={`flex-1 px-4 py-3 w-full border border-gray-300 rounded-lg text-lg text-gray-800 focus:outline-none ${loading && 'cursor-not-allowed'} `}
               />
               <button
-                className={`bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition duration-300 w-full sm:w-auto ${!url && 'cursor-not-allowed'}`}
+                className={`bg-gray-900 text-white flex justify-center py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition duration-300 w-full sm:w-auto ${!url && 'cursor-not-allowed'} ${loading && 'cursor-not-allowed'}`}
                 disabled={!url}
                 onClick={handleShortURL}
               >
-                Short URL
+               {loading? <AiOutlineLoading className="animate-spin" />: "Short URL"}
               </button>
             </div>
             <h2 className="text-sm font-normal text-gray-600 text-left mt-2 relative z-10">
@@ -93,7 +112,7 @@ export default function Convert() {
             </h2>
           </div>
           <h2 className="text-sm font-normal text-gray-400 text-left mt-2 relative z-10">
-              Short URLs will be deleted after 30 days.
+              Short URLs will be deleted after 150 days.
             </h2>
         </div>
       )}
@@ -101,7 +120,7 @@ export default function Convert() {
         <div className="w-full h-screen flex items-center justify-center bg-gray-100 relative overflow-hidden p-4 sm:p-0">
           <div className="w-full max-w-4xl space-y-4">
             {/* Back Button */}
-            <div onClick={handleShortAnotherURL} className="absolute top-4 left-4 md:left-44 z-10">
+            <div onClick={handleBackBtnClick} className="absolute top-4 left-4 md:left-44 z-10">
               <button className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-900 transition duration-300">
                 <IoChevronBackOutline size={20} />
               </button>
@@ -127,8 +146,8 @@ export default function Convert() {
                 {/* Long URL */}
                 <div className="flex items-center justify-between space-x-2 pb-6 border-b-2">
                   <div className="flex-1">
-                    <p className="text-sm sm:text-base text-gray-600">Long URL</p>
-                    <p className="text-lg font-semibold text-gray-900 break-all">{longUrl}</p>
+                    <p className="text-lg font-semibold text-gray-900 ">Long URL</p>
+                    <p className="text-sm sm:text-base text-gray-600 break-all">{longUrl}</p>
                   </div>
                 </div>
 
@@ -137,8 +156,8 @@ export default function Convert() {
                 {/* Short URL */}
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex-1">
-                    <p className="text-sm sm:text-base text-gray-600">Short URL</p>
-                    <p className="text-lg font-semibold text-gray-900 break-all">{shortedUrl}</p>
+                    <p className="text-lg font-semibold text-gray-900 ">Short URL</p>
+                    <a href="" className="text-sm sm:text-base text-gray-600 break-all underline">{shortId}</a>
                   </div>
                   <button 
                     className="p-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition duration-300"
@@ -154,17 +173,17 @@ export default function Convert() {
               <div ref={QrRef} className="w-auto h-auto bg-gray-900 relative z-10">
               <div  className="w-auto h-auto p-4 border-4 border-gray-900 bg-white rounded-xl">
                 <div className="flex justify-center w-auto ">
-                  <QRCode value={shortedUrl} size={200} level="H" />
+                  <QRCode value={shortId} size={200} level="H" />
                 </div>
               </div>
               </div>
             </div>
 
-            {/* Done Button (Centered) */}
+            {/* Download Button */}
             <div className="flex justify-center mt-6">
               <button
                 onClick={handleDownloadQR}
-                className="px-8 py-3 border-2 border-gray-900 bg-gray-900 text-white rounded-md hover:text-gray-900 hover:bg-white transition duration-300 shadow-lg"
+                className="px-8 py-3 border-2 border-gray-900 bg-gray-900 text-white rounded-md hover:text-gray-900 hover:bg-white transition duration-300 hover:shadow-2xl"
               >
                 Download QR
               </button>

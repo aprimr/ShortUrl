@@ -1,8 +1,8 @@
-import { FaArrowRight, FaCheckCircle, FaLink, FaChartLine, FaShieldAlt, FaUsers, FaCogs } from "react-icons/fa";
+import { FaArrowRight, FaLink, FaChartLine, FaShieldAlt, FaUsers } from "react-icons/fa";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6 pt-24">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6 pt-24 pb-10">
       <div className="text-center max-w-3xl">
         <h1 className="text-6xl font-bold text-gray-900 mb-6">Short URL - Simplify Your Links</h1>
         <p className="text-xl text-gray-600 mb-6">
@@ -13,7 +13,7 @@ export default function Home() {
         </a>
       </div>
 
-      <h1 className="text-4xl font-bold text-gray-900 mt-12">ShortURL Features</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mt-12">ShortURL Features</h1>
       
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-5xl">
         <div className="p-6 bg-white shadow-lg rounded-lg">

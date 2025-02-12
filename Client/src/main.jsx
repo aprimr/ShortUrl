@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import Convert from './pages/Convert'
 import Saved from './pages/Saved'
 import PageNotFound from './components/PageNotFound'
+import Redirect from './Redirect'
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<Home />} />
         <Route path="/convert" element={<Convert />} />
         <Route path="/saved" element={<Saved />} />
+        <Route path="/:shortId" element={<Redirect />} />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
     <Footer />
