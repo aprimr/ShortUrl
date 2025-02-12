@@ -7,11 +7,5 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
-    proxy: {
-      "/api": {
-        target: "https://short-url-backend-v9xs.onrender.com",
-        changeOrigin: true,
-      },
-    },
   },
 });

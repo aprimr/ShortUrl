@@ -22,7 +22,7 @@ export default function Convert() {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.post('/api/url/shorten', { longUrl: url });
+      const res = await axios.post('https://short-url-backend-v9xs.onrender.com/api/url/shorten', { longUrl: url });
       console.log("API Response:", res.data); 
       if(res.status === 200){
         setLoading(false)

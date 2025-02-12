@@ -13,7 +13,7 @@ export default function RedirectPage() {
   const getOriginalUrl = async () => {
     setError('')
     try {
-      const res = await axios.get(`/api/${shortId}`);
+      const res = await axios.get(`https://short-url-backend-v9xs.onrender.com/api/${shortId}`);
       if(res.status === 200 ){
         window.location.href = res.data.longUrl
       }
