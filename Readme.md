@@ -13,11 +13,11 @@ A simple URL shortener application that allows users to shorten long URLs and ac
 
 - **Frontend:** React, Tailwind CSS
 - **Backend:** Node.js, Express.js, MongoDB
-- **API:** RESTful API for creating, fetching, and deleting URLs.
+- **API:** RESTful API for creating, fetching URLs.
 
 ## API Endpoints:
 
-### 1. **POST** `/api/shorten`
+### 1. **POST** `/api/url/shorten`
 
 **Description:** Shortens a given long URL and stores it in the database.
 
@@ -40,37 +40,18 @@ A simple URL shortener application that allows users to shorten long URLs and ac
 
 ---
 
-### 2. **GET** `/api/urls`
+### 2. **GET** `/api/:shortId`
 
-**Description:** Fetch all saved URLs.
+**Description:** Fetch URL with shortId.
 
 **Response:**
 
 ```json
-[
-  {
-    "sn": 1,
-    "longUrl": "https://www.example.com",
-    "shortUrl": "https://short.ly/abc123"
-  },
-  {
-    "sn": 2,
-    "longUrl": "https://www.google.com",
-    "shortUrl": "https://short.ly/xyz789"
-  }
-]
+{
+  "message": "Redirected.",
+  "longUrl": "https://www.example.com"
+}
 ```
-
----
-
-### 3. **DELETE** `/api/urls/:id`
-
-**Description:** Delete a URL by its unique ID.
-
-**Response:**
-
-- **Status 200:** Successfully deleted URL.
-- **Status 404:** URL not found.
 
 ---
 
