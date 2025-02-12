@@ -23,6 +23,9 @@ app.use(
 app.use(express.json());
 
 //Routes
+app.get("/", (req, res) => {
+  res.send("Hello MicroLink!");
+});
 app.use("/api/url/", urlRoutes);
 app.get("/api/:shortId", getShortUrl);
 
