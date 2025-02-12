@@ -23,6 +23,7 @@ export default function Convert() {
     setError('');
     try {
       const res = await axios.post('/api/url/shorten', { longUrl: url });
+      console.log("API Response:", res.data); 
       if(res.status === 200){
         setLoading(false)
         setLongUrl(res.data.urls.longUrl);
