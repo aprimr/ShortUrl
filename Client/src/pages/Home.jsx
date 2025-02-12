@@ -1,4 +1,5 @@
 import { FaArrowRight, FaLink, FaChartLine, FaShieldAlt, FaUsers } from "react-icons/fa";
+import { NavLink } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -8,9 +9,9 @@ export default function Home() {
         <p className="text-xl text-gray-600 mb-6">
           Shorten long URLs, track analytics, and share them easily with our fast and reliable URL shortener.
         </p>
-        <a href="/convert" className="bg-gray-900 text-white px-8 py-4 rounded-lg text-xl inline-flex items-center hover:bg-gray-800 transition duration-300">
+        <NavLink to="/convert" className="bg-gray-900 text-white px-8 py-4 rounded-lg text-xl inline-flex items-center hover:bg-gray-800 transition duration-300">
           Get Started <FaArrowRight className="ml-3" />
-        </a>
+        </NavLink>
       </div>
 
       <h1 className="text-3xl font-bold text-gray-900 mt-12">ShortURL Features</h1>

@@ -157,7 +157,7 @@ export default function Convert() {
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex-1">
                     <p className="text-lg font-semibold text-gray-900 ">Short URL</p>
-                    <a href="" className="text-sm sm:text-base text-gray-600 break-all underline">{shortId}</a>
+                    <a href="" className="text-sm sm:text-base text-gray-600 break-all underline">https://shorturl-jaj5.onrender.com/{shortId}</a>
                   </div>
                   <button 
                     className="p-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition duration-300"
@@ -173,7 +173,7 @@ export default function Convert() {
               <div ref={QrRef} className="w-auto h-auto bg-gray-900 relative z-10">
               <div  className="w-auto h-auto p-4 border-4 border-gray-900 bg-white rounded-xl">
                 <div className="flex justify-center w-auto ">
-                  <QRCode value={shortId} size={200} level="H" />
+                  <QRCode value={`https://shorturl-jaj5.onrender.com/${shortId}`} size={200} level="H" />
                 </div>
               </div>
               </div>
