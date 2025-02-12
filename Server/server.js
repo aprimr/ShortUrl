@@ -26,7 +26,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello MicroLink!");
 });
-app.use("/api/url/", urlRoutes);
+app.use("/api/url", urlRoutes);
 app.get("/api/:shortId", getShortUrl);
 
 app.listen(PORT, () => {
