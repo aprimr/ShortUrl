@@ -11,7 +11,6 @@ export default defineConfig({
       "/api": {
         target: "https://short-url-backend-v9xs.onrender.com",
         changeOrigin: true,
-        secure: false,
       },
     },
   },
