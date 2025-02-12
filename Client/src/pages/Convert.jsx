@@ -23,7 +23,6 @@ export default function Convert() {
     setError('');
     try {
       const res = await axios.post('https://short-url-backend-v9xs.onrender.com/api/url/shorten', { longUrl: url });
-      console.log("API Response:", res.data); 
       if(res.status === 200){
         setLoading(false)
         setLongUrl(res.data.urls.longUrl);
@@ -158,7 +157,7 @@ export default function Convert() {
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex-1">
                     <p className="text-lg font-semibold text-gray-900 ">Short URL</p>
-                    <a href="" className="text-sm sm:text-base text-gray-600 break-all underline">https://shorturl-jaj5.onrender.com/{shortId}</a>
+                    <a href={`https://shorturl-jaj5.onrender.com/${shortId}`} className="text-sm sm:text-base text-gray-600 break-all underline">https://shorturl-jaj5.onrender.com/{shortId}</a>
                   </div>
                   <button 
                     className="p-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition duration-300"
