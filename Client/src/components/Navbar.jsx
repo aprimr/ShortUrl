@@ -12,9 +12,9 @@ const Navbar = () => {
           <li>
             <NavLink to="/convert" className="text-lg hover:text-primary hover:underline">Convert</NavLink>
           </li>
-          <li>
+{/*           <li>
             <NavLink to="/saved" className="text-lg hover:text-primary hover:underline">Saved</NavLink>
-          </li>
+          </li> */}
         </ul>
       </div>
     </nav>
