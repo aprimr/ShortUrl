@@ -5,8 +5,6 @@ A simple URL shortener application that allows users to shorten long URLs and ac
 ## Features:
 
 - Shorten long URLs and generate unique short URLs.
-- View saved URLs in a table format.
-- Delete previously saved URLs.
 - Responsive UI for mobile and desktop devices.
 
 ## Technologies Used:
@@ -57,8 +55,4 @@ A simple URL shortener application that allows users to shorten long URLs and ac
 
 ## Conclusion
 
-This URL shortener app allows users to generate short links, view them in a list, and remove them if needed. It’s a simple but powerful tool for managing URLs. The backend provides easy-to-use API endpoints to interact with the data, and the frontend is designed with a clean, responsive UI using React and Tailwind CSS.
-
-## License
-
-This project is licensed under the **MIT License** - see the LICENSE file for details.
+This URL shortener app allows users to generate short links. It’s a simple but powerful tool for managing URLs. The backend provides easy-to-use API endpoints to interact with the data, and the frontend is designed with a clean, responsive UI using React and Tailwind CSS.
