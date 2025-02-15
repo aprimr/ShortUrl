@@ -90,7 +90,7 @@ export default function Convert() {
   const handleCopyShortUrl = () => {
     setCopied(true);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(`${import.meta.env.VITE_BACKEND_URL}/${shortId}`)
+      navigator.clipboard.writeText(`${import.meta.env.VITE_FRONTEND_URL}/${shortId}`)
     } else {
       setError('Your browser doesnot support copy feature')
     }
