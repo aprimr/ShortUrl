@@ -1,17 +1,22 @@
 # URL Shortener App
 
-A simple URL shortener application that allows users to shorten long URLs and access them through custom short links. It consists of a backend API built with Express.js and a frontend built with React and Tailwind CSS.
+A simple URL shortener application that allows users to shorten long URLs, access them through custom short links, and save frequently used URLs. It consists of a backend API built with Express.js and a frontend built with React and Tailwind CSS.
 
 ## Features:
 
 - Shorten long URLs and generate unique short URLs.
+- Save and manage frequently used URLs (saved locally on the user's device).
 - Responsive UI for mobile and desktop devices.
 
 ## Technologies Used:
 
 - **Frontend:** React, Tailwind CSS
 - **Backend:** Node.js, Express.js, MongoDB
-- **API:** RESTful API for creating, fetching URLs.
+- **API:** RESTful API for creating and fetching URLs.
+
+## Live Demo:
+
+Check out the live version of the app: [Live URL Shortener](https://shorturl-jaj5.onrender.com)
 
 ## API Endpoints:
 
@@ -55,4 +60,4 @@ A simple URL shortener application that allows users to shorten long URLs and ac
 
 ## Conclusion
 
-This URL shortener app allows users to generate short links. It’s a simple but powerful tool for managing URLs. The backend provides easy-to-use API endpoints to interact with the data, and the frontend is designed with a clean, responsive UI using React and Tailwind CSS.
+This URL shortener app allows users to generate short links and manage their saved URLs efficiently. The backend provides easy-to-use API endpoints to interact with the data, and the frontend is designed with a clean, responsive UI using React and Tailwind CSS. Saved URLs are stored locally on the user's device rather than in a database.
