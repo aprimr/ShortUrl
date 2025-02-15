@@ -11,7 +11,6 @@ dotenv.config();
 
 // ENV variables
 const PORT = process.env.PORT;
-console.log(process.env.FRONTEND_URL)
 
 //Middlewares
 app.use(
