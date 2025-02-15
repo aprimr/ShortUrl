@@ -1,28 +1,57 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import { AiOutlineLoading } from "react-icons/ai";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { exportComponentAsPNG } from 'react-component-export-image';
+import isURL from 'validator/es/lib/isURL';
 
 import axios from 'axios'
 import QRCode from "react-qr-code";
 
 export default function Convert() {
   const [url, setUrl] = useState("");
+  const [isThisURL, setIsThisURL] = useState(false)
   const [longUrl, setLongUrl] = useState("");
   const [shortId, setShortId] = useState("");
   const [copied, setCopied] = useState(false);
-  const [error, setError] = useState('hello');
-  const [loading, setLoading] = useState(false)
+  const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showShortedLink, setShowShortedLink] = useState(false);
 
   const QrRef = useRef()
 
+  const isURLOptions = { 
+    protocols: ['http','https'],
+    require_tld: true, 
+    require_protocol: true, 
+    require_host: true, 
+    require_port: false, 
+    require_valid_protocol: true, 
+    allow_underscores: false, 
+    host_whitelist: false, 
+    host_blacklist: false, 
+    allow_trailing_dot: false, 
+    allow_protocol_relative_urls: false, 
+    allow_fragments: true, 
+    allow_query_components: true, 
+    disallow_auth: false, 
+    validate_length: true 
+  }
+
+  useEffect(() => {
+    const match = isURL(url, isURLOptions);
+    if(match) {
+      setIsThisURL(true);
+    } else {
+      setIsThisURL(false);
+    }
+  }, [url])
+  
+
   const handleShortURL = async () =>{
     setLoading(true);
-    setError('');
     try {
-      const res = await axios.post('https://short-url-backend-v9xs.onrender.com/api/url/shorten', { longUrl: url });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/url/shorten`, { longUrl: url });
       if(res.status === 200){
         setLoading(false)
         setLongUrl(res.data.urls.longUrl);
@@ -33,7 +62,6 @@ export default function Convert() {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message)
     }
     setLoading(false);
   }
@@ -44,12 +72,25 @@ export default function Convert() {
     setLongUrl("");
     setShortId("");
     setCopied(null);
+    setSaved(false);
   };
+
+  const handleSaveUrl = () =>{
+    setSaved(true);
+    const prevSaved = JSON.parse(localStorage.getItem('SavedUrls')) || [];
+    const urlPayload = {
+      longUrl,
+      shortUrl: `${import.meta.env.VITE_FRONTEND_URL}/${shortId}`,
+    }
+    const newSaved = [...prevSaved, urlPayload ]
+    localStorage.setItem('SavedUrls', JSON.stringify(newSaved))
+
+  }
 
   const handleCopyShortUrl = () => {
     setCopied(true);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(`https://shorturl-jaj5.onrender.com/${shortId}`)
+      navigator.clipboard.writeText(`${import.meta.env.VITE_BACKEND_URL}/${shortId}`)
     } else {
       setError('Your browser doesnot support copy feature')
     }
@@ -100,15 +141,15 @@ export default function Convert() {
                 className={`flex-1 px-4 py-3 w-full border border-gray-300 rounded-lg text-lg text-gray-800 focus:outline-none ${loading && 'cursor-not-allowed'} `}
               />
               <button
-                className={`bg-gray-900 text-white flex justify-center py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition duration-300 w-full sm:w-auto ${!url && 'cursor-not-allowed'} ${loading && 'cursor-not-allowed'}`}
-                disabled={!url}
+                className={`bg-gray-900 text-white flex justify-center py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition duration-300 w-full sm:w-auto ${!url && 'cursor-not-allowed'} ${loading && 'cursor-not-allowed'} ${!isThisURL && 'cursor-not-allowed bg-gray-600 hover:bg-gray-600'}`}
+                disabled={!url || !isThisURL}
                 onClick={handleShortURL}
               >
                {loading? <AiOutlineLoading className="animate-spin" />: "Short URL"}
               </button>
             </div>
-            <h2 className="text-sm font-normal text-gray-600 text-left mt-2 relative z-10">
-              * The LongUrl must start with <strong >https://...</strong>
+            <h2 className={`text-sm font-normal text-gray-600 text-left mt-2 relative z-10 ${!isThisURL && 'text-rose-500'}`}>
+              * The Url must start with <strong >https://www...</strong>
             </h2>
           </div>
           <h2 className="text-sm font-normal text-gray-400 text-left mt-2 relative z-10">
@@ -142,7 +183,14 @@ export default function Convert() {
             {/* Container for Link and QR Code */}
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-6 sm:space-y-0 sm:space-x-6 relative z-10">
               {/* Link Info */}
-              <div className="bg-white p-6 rounded-lg shadow-md flex-1 border border-gray-200 w-full">
+              <div className="relative bg-white p-6 rounded-lg shadow-md flex-1 border border-gray-200 w-full">
+                {/* Save Btn */}
+                <button 
+                  className="absolute top-0 right-0 px-5 py-2 bg-gray-900 text-white rounded-bl-lg rounded-tr-lg hover:bg-gray-800 transition duration-300"
+                  onClick={handleSaveUrl}
+                >
+                  {saved? "Saved" : "Save URL"}
+                </button>
                 {/* Long URL */}
                 <div className="flex items-center justify-between space-x-2 pb-6 border-b-2">
                   <div className="flex-1">
@@ -157,7 +205,7 @@ export default function Convert() {
                 <div className="flex items-center justify-between space-x-2">
                   <div className="flex-1">
                     <p className="text-lg font-semibold text-gray-900 ">Short URL</p>
-                    <a href={`https://shorturl-jaj5.onrender.com/${shortId}`} className="text-sm sm:text-base text-gray-600 break-all underline">https://shorturl-jaj5.onrender.com/{shortId}</a>
+                    <a href={`${import.meta.env.VITE_FRONTEND_URL}/${shortId}`} className="text-sm sm:text-base text-gray-600 break-all underline">{import.meta.env.VITE_FRONTEND_URL}/{shortId}</a>
                   </div>
                   <button 
                     className="p-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition duration-300"
@@ -166,14 +214,13 @@ export default function Convert() {
                     {!copied?<LuCopy size={18} /> : <LuCopyCheck size={18} />}
                   </button>
                 </div>
-                {error&&<p className="text-sm text-red-500 mt-2">{error}</p>}
               </div> 
 
               {/* QR Code */}
               <div ref={QrRef} className="w-auto h-auto bg-gray-900 relative z-10">
               <div  className="w-auto h-auto p-4 border-4 border-gray-900 bg-white rounded-xl">
                 <div className="flex justify-center w-auto ">
-                  <QRCode value={`https://shorturl-jaj5.onrender.com/${shortId}`} size={200} level="H" />
+                  <QRCode value={`${import.meta.env.VITE_FRONTEND_URL}/${shortId}`} size={200} level="H" />
                 </div>
               </div>
               </div>

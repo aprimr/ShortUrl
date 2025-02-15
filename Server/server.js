@@ -15,7 +15,7 @@ const PORT = process.env.PORT;
 //Middlewares
 app.use(
   cors({
-    origin: "https://shorturl-jaj5.onrender.com",
+    origin: `${process.env.FRONTEND_URL}`,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -23,9 +23,6 @@ app.use(
 app.use(express.json());
 
 //Routes
-app.get("/", (req, res) => {
-  res.send("Hello MicroLink!");
-});
 app.use("/api/url", urlRoutes);
 app.get("/api/:shortId", getShortUrl);
 
